@@ -1,0 +1,304 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+
+    <title>AngularJS - Google I/O Extended 2012 Brussels - @jovoordeckers</title>
+
+    <meta name="description"
+          content="An easy to use CSS 3D slideshow tool for quickly creating good looking HTML presentations.">
+    <meta name="author" content="Hakim El Hattab">
+
+    <meta name="apple-mobile-web-app-capable" content="yes"/>
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+
+    <link href='http://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic' rel='stylesheet'
+          type='text/css'>
+
+    <link rel="stylesheet" href="css/reset.css">
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/print.css" type="text/css" media="print">
+
+    <link rel="stylesheet" href="lib/zenburn.css">
+
+    <style>
+        .done-true {
+          text-decoration: line-through;
+          color: grey;
+        }
+    </style>
+
+    <script src="todo/lib/angular-1.0.1.min.js"></script>
+</head>
+
+<body ng-app>
+
+<div class="reveal">
+
+<!-- Used to fade in a background when a specific slide state is reached -->
+<div class="state-background"></div>
+
+<!-- Any section element inside of this container is displayed as a slide -->
+<div class="slides">
+
+<section>
+
+    <img src="img/AngularJS-large.png" style="border: none; background: none; -webkit-box-shadow: none;">
+    <h3 class="inverted">HTML enhanced for web apps!</h3>
+    <a href="http://angularjs.org">angularjs.org</a><br/><br/>
+    <a href="http://twitter.com/jovoordeckers">@jovoordeckers</a><br/><br/>
+    <a href="http://github.com/jayv/io-angular">github.com/jayv/io-angular</a><br/><br/>
+
+    <script>
+        // Delicously hacky. Look away.
+        if (navigator.userAgent.match(/(iPhone|iPad|iPod|Android)/i)) document.write('<p style="color: rgba(0,0,0,0.3); text-shadow: none;">(' + 'Tap to navigate' + ')</p>');
+    </script>
+</section>
+
+<section>
+
+    <h3>JavaScript MVC framework</h3>
+
+    <ul>
+        <li>plain HTML templates</li>
+        <li>binding</li>
+        <li>dependency injection</li>
+        <li>testable</li>
+    </ul>
+
+</section>
+
+
+<section>
+
+    <h3>The Basics</h3>
+
+    <pre><code contenteditable>
+        &lt;!doctype html&gt;
+        &lt;html ng-app&gt;
+          &lt;head&gt;
+            &lt;script src=&quot;http://code.angularjs.org/angular-1.0.1.min.js&quot;&gt;&lt;/script&gt;
+          &lt;/head&gt;
+          &lt;body&gt;
+            &lt;div&gt;
+              &lt;label&gt;Name:&lt;/label&gt;
+              &lt;input type=&quot;text&quot; ng-model=&quot;yourName&quot; placeholder=&quot;Enter a name here&quot;&gt;
+              &lt;h1&gt;Hello {&#8203;{yourName}&#8203;}!&lt;/h1&gt;
+            &lt;/div&gt;
+          &lt;/body&gt;
+        &lt;/html&gt;
+    </code></pre>
+
+    <script type="text/javascript">
+        function BasicCtrl($scope) { }
+    </script>
+
+    <div ng-controller="BasicCtrl">
+      <label>Name:</label>
+      <input type="text" ng-model="yourName" placeholder="Enter a name here" contenteditable> <br/><br/>
+      <h2>Hello {{yourName}}!</h2>
+    </div>
+
+</section>
+
+<section>
+
+    <section>
+
+        <h2>Todo: DEMO</h2>
+
+        <div ng-controller="TodoCtrl">
+            <span>{{remaining()}} of {{todos.length}} remaining</span>
+          [ <a href="" ng-click="archive()">archive</a> ]<br/>
+          <ul>
+            <li ng-repeat="todo in todos">
+              <input type="checkbox" ng-model="todo.done">
+              <span class="done-{{todo.done}}">{{todo.text}}</span>
+            </li>
+          </ul>
+          <form ng-submit="addTodo()">
+            <input type="text" ng-model="todoText"  size="30"
+                   placeholder="add new todo here" contenteditable>
+            <input type="submit" value="add">
+          </form>
+        </div>
+
+        <script>
+            function TodoCtrl($scope) {
+              $scope.todos = [
+                {text:'learn angular', done:true},
+                {text:'build an angular app', done:false}];
+
+              $scope.addTodo = function() {
+                $scope.todos.push({text:$scope.todoText, done:false});
+                $scope.todoText = '';
+              };
+
+              $scope.remaining = function() {
+                var count = 0;
+                angular.forEach($scope.todos, function(todo) {
+                  count += todo.done ? 0 : 1;
+                });
+                return count;
+              };
+
+              $scope.archive = function() {
+                var oldTodos = $scope.todos;
+                $scope.todos = [];
+                angular.forEach(oldTodos, function(todo) {
+                  if (!todo.done) $scope.todos.push(todo);
+                });
+              };
+            }
+        </script>
+
+    </section>
+    <section>
+
+        <h3>Todo: todo.html</h3>
+
+        <pre><code contenteditable>
+          &lt;body&gt;
+            &lt;h2&gt;Todo&lt;/h2&gt;
+
+            &lt;div ng-controller=&quot;TodoCtrl&quot;&gt;
+
+              &lt;span&gt;{&#8203;{remaining()}&#8203;} of {&#8203;{todos.length}&#8203;} remaining&lt;/span&gt;
+
+              [ &lt;a href=&quot;&quot; ng-click=&quot;archive()&quot;&gt;archive&lt;/a&gt; ]
+
+              &lt;ul class=&quot;unstyled&quot;&gt;
+                &lt;li ng-repeat=&quot;todo in todos&quot;&gt;
+                  &lt;input type=&quot;checkbox&quot; ng-model=&quot;todo.done&quot;&gt;
+                  &lt;span class=&quot;done-{&#8203;{todo.done}&#8203;}&quot;&gt;{&#8203;{todo.text}&#8203;}&lt;/span&gt;
+                &lt;/li&gt;
+              &lt;/ul&gt;
+
+              &lt;form ng-submit=&quot;addTodo()&quot;&gt;
+
+                &lt;input type=&quot;text&quot; ng-model=&quot;todoText&quot;  size=&quot;30&quot;
+                       placeholder=&quot;add new todo here&quot;&gt;
+                &lt;input class=&quot;btn-primary&quot; type=&quot;submit&quot; value=&quot;add&quot;&gt;
+
+              &lt;/form&gt;
+            &lt;/div&gt;
+          &lt;/body&gt;
+        </code></pre>
+
+    </section>
+    <section>
+
+        <h3>Todo: todo.js</h3>
+
+        <pre><code contenteditable>
+
+            function TodoCtrl($scope) {
+
+              $scope.todos = [
+                {text:'learn angular', done:true},
+                {text:'build an angular app', done:false}];
+
+              $scope.addTodo = function() {
+                $scope.todos.push({text:$scope.todoText, done:false});
+                $scope.todoText = '';
+              };
+
+              $scope.remaining = function() {
+                var count = 0;
+                angular.forEach($scope.todos, function(todo) {
+                  count += todo.done ? 0 : 1;
+                });
+                return count;
+              };
+
+              $scope.archive = function() {
+                var oldTodos = $scope.todos;
+                $scope.todos = [];
+                angular.forEach(oldTodos, function(todo) {
+                  if (!todo.done) $scope.todos.push(todo);
+                });
+              };
+            }
+
+        </code></pre>
+
+    </section>
+
+</section>
+
+<section>
+    <h1>Thanks</h1>
+    <a href="http://angularjs.org">angularjs.org</a><br/><br/>
+    <a href="http://github.com/jayv/io-angular">github.com/jayv/io-angular</a><br/><br/>
+    <a href="http://twitter.com/jovoordeckers">@jovoordeckers</a><br/><br/>
+</section>
+</div>
+
+<!-- The navigational controls UI -->
+<aside class="controls">
+    <a class="left" href="#">&#x25C4;</a>
+    <a class="right" href="#">&#x25BA;</a>
+    <a class="up" href="#">&#x25B2;</a>
+    <a class="down" href="#">&#x25BC;</a>
+</aside>
+
+<!-- Displays presentation progress, max value changes via JS to reflect # of slides -->
+<div class="progress"><span></span></div>
+
+</div>
+
+<!-- Optional libraries for code syntax highlighting and classList support in IE9 -->
+<script src="lib/highlight.js"></script>
+<script src="lib/classList.js"></script>
+
+<script src="js/reveal.js"></script>
+
+<script>
+    // Parse the query string into a key/value object
+    var query = {};
+    location.search.replace(/[A-Z0-9]+?=(\w*)/gi, function (a) {
+        query[ a.split('=').shift() ] = a.split('=').pop();
+    });
+
+    // Fires when a slide with data-state=customevent is activated
+    Reveal.addEventListener('customevent', function () {
+        alert('"customevent" has fired');
+    });
+
+    // Fires each time a new slide is activated
+    Reveal.addEventListener('slidechanged', function (event) {
+        // event.previousSlide, event.currentSlide, event.indexh, event.indexv
+    });
+
+    Reveal.initialize({
+        // Display controls in the bottom right corner
+        controls:false,
+
+        // Display a presentation progress bar
+        progress:true,
+
+        // If true; each slide will be pushed to the browser history
+        history:true,
+
+        // Loops the presentation, defaults to false
+        loop:false,
+
+        // Flags if mouse wheel navigation should be enabled
+        mouseWheel:false,
+
+        // Apply a 3D roll to links on hover
+        rollingLinks:true,
+
+        // UI style
+        theme:query.theme || 'default', // default/neon
+
+        // Transition style
+        transition:query.transition || 'default' // default/cube/page/concave/linear(2d)
+    });
+
+    hljs.initHighlightingOnLoad();
+</script>
+
+</body>
+</html>
