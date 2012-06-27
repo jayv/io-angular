@@ -82,9 +82,13 @@
           &lt;/head&gt;
           &lt;body&gt;
             &lt;div&gt;
+
               &lt;label&gt;Name:&lt;/label&gt;
-              &lt;input type=&quot;text&quot; ng-model=&quot;yourName&quot; placeholder=&quot;Enter a name here&quot;&gt;
+
+              &lt;input type=&quot;text&quot; ng-model=&quot;yourName&quot; &gt;
+
               &lt;h1&gt;Hello {&#8203;{yourName}&#8203;}!&lt;/h1&gt;
+
             &lt;/div&gt;
           &lt;/body&gt;
         &lt;/html&gt;
@@ -106,7 +110,7 @@
 
     <section>
 
-        <h2>Todo: DEMO</h2>
+        <h2>Todo</h2>
 
         <div ng-controller="TodoCtrl">
             <span>{{remaining()}} of {{todos.length}} remaining</span>
@@ -156,43 +160,44 @@
     </section>
     <section>
 
-        <h3>Todo: todo.html</h3>
+        <h3>todo.html</h3>
 
         <pre><code contenteditable>
-          &lt;body&gt;
-            &lt;h2&gt;Todo&lt;/h2&gt;
-
             &lt;div ng-controller=&quot;TodoCtrl&quot;&gt;
 
-              &lt;span&gt;{&#8203;{remaining()}&#8203;} of {&#8203;{todos.length}&#8203;} remaining&lt;/span&gt;
+              &lt;span&gt;{&#8203;{ remaining() }&#8203;} of {&#8203;{ todos.length }&#8203;} remaining&lt;/span&gt;
 
               [ &lt;a href=&quot;&quot; ng-click=&quot;archive()&quot;&gt;archive&lt;/a&gt; ]
 
-              &lt;ul class=&quot;unstyled&quot;&gt;
+              &lt;ul&gt;
                 &lt;li ng-repeat=&quot;todo in todos&quot;&gt;
+
                   &lt;input type=&quot;checkbox&quot; ng-model=&quot;todo.done&quot;&gt;
-                  &lt;span class=&quot;done-{&#8203;{todo.done}&#8203;}&quot;&gt;{&#8203;{todo.text}&#8203;}&lt;/span&gt;
+
+                  &lt;span class=&quot; done-{&#8203;{todo.done}&#8203;} &quot;&gt;
+
+                    {&#8203;{todo.text}&#8203;}
+
+                  &lt;/span&gt;
                 &lt;/li&gt;
               &lt;/ul&gt;
 
               &lt;form ng-submit=&quot;addTodo()&quot;&gt;
 
-                &lt;input type=&quot;text&quot; ng-model=&quot;todoText&quot;  size=&quot;30&quot;
-                       placeholder=&quot;add new todo here&quot;&gt;
-                &lt;input class=&quot;btn-primary&quot; type=&quot;submit&quot; value=&quot;add&quot;&gt;
+                &lt;input type=&quot;text&quot; ng-model=&quot;todoText&quot; &gt;
+
+                &lt;input type=&quot;submit&quot; value=&quot;add&quot;&gt;
 
               &lt;/form&gt;
             &lt;/div&gt;
-          &lt;/body&gt;
         </code></pre>
 
     </section>
     <section>
 
-        <h3>Todo: todo.js</h3>
+        <h3>todo.js</h3>
 
         <pre><code contenteditable>
-
             function TodoCtrl($scope) {
 
               $scope.todos = [
@@ -200,7 +205,7 @@
                 {text:'build an angular app', done:false}];
 
               $scope.addTodo = function() {
-                $scope.todos.push({text:$scope.todoText, done:false});
+                $scope.todos.push(  {text:$scope.todoText, done:false}  );
                 $scope.todoText = '';
               };
 
@@ -220,7 +225,6 @@
                 });
               };
             }
-
         </code></pre>
 
     </section>
